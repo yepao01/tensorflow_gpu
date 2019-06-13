@@ -23,8 +23,8 @@ model.add(Dense(10,activation='softmax'))
 model.compile(optimizer='sgd',loss='categorical_crossentropy',metrics=['accuracy'])
 model.summary()
 
-# model.fit(x_train,y_train,batch_size=100,epochs=10,shuffle=True)
+model.fit(x_train,y_train,batch_size=100,epochs=10,shuffle=True)
 # model.save(r'D:/test/tensorflow_gpu/LeNet-5_model.h5')
 #[0.10342620456655367 0.9834000068902969]
-# loss, accuracy=model.evaluate(x_test, y_test)
-# print(loss, accuracy)
+loss, accuracy=model.evaluate(x_test, y_test)
+print(loss, accuracy)

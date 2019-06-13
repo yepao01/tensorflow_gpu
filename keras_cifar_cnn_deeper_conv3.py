@@ -55,17 +55,27 @@ print(model.summary())
 model.compile(loss="categorical_crossentropy",
               optimizer="adam",
               metrics=["accuracy"])
+try:
+    model.load_weights("./SaveModel/cifarCnnModel.h5")
+    print("加载模型成功。")
+except:
+    print("加载失败，开始训练一个新模型。")
+
+
 # 训练
 train_history = model.fit(x_img_train_normalize,
                           y_img_train_OneHot,
                           validation_split=0.2,
-                          epochs=10,
+                          epochs=2,
                           batch_size=200,
-                          verbose=1)
+                          verbose=2)
+
+model.save_weights("./SaveModel/cifarCnnModel.h5")
+print("保存模型")
 # 评估
 scores = model.evaluate(x_img_test_normalize,
                         y_img_test_OneHot,
-                        verbose=1)
+                        verbose=2)
 print('scores:', scores[1])
 # 预测
 prediction = model.predict_classes(x_img_test_normalize)
@@ -74,25 +84,25 @@ label_dict = {0: "airplane", 1: "automobile", 2: "bird", 3: "cat", 4: "deer",
               5: "dog", 6: "frog", 7: "horse", 8: "ship", 9: "truck"}
 
 
-def plot_images_labels_predictions(images, labels, prediction, idx, num=10):
-    fig = plt.gcf()
-    fig.set_size_inches(12, 14)
-    if num > 25:
-        num = 25
-    for i in range(0, num):
-        ax = plt.subplot(5, 5, 1 + i)
-        ax.imshow(images[idx], cmap="binary")
-        title = str(i) + "," + label_dict[labels[i][0]]
-        if len(prediction) > 0:
-            title += "=>" + label_dict[prediction[i]]
-        ax.set_title(title, fontsize=10)
-        ax.set_xticks([])
-        ax.set_yticks([])
-        idx += 1
-    plt.show()
-
-
-plot_images_labels_predictions(x_img_test,
-                               y_img_test,
-                               prediction,
-                               0, 10)
+# def plot_images_labels_predictions(images, labels, prediction, idx, num=10):
+#     fig = plt.gcf()
+#     fig.set_size_inches(12, 14)
+#     if num > 25:
+#         num = 25
+#     for i in range(0, num):
+#         ax = plt.subplot(5, 5, 1 + i)
+#         ax.imshow(images[idx], cmap="binary")
+#         title = str(i) + "," + label_dict[labels[i][0]]
+#         if len(prediction) > 0:
+#             title += "=>" + label_dict[prediction[i]]
+#         ax.set_title(title, fontsize=10)
+#         ax.set_xticks([])
+#         ax.set_yticks([])
+#         idx += 1
+#     plt.show()
+#
+#
+# plot_images_labels_predictions(x_img_test,
+#                                y_img_test,
+#                                prediction,
+#                                0, 10)
